@@ -13,13 +13,13 @@
 ##   debhelper and devscripts packages 
 ##
 
-WF_CURRENT_VERSION = 18.0.1.Final
+WF_CURRENT_VERSION = 26.1.3.Final
 
 WF_VERSION := $(or $(version),$(WF_VERSION),$(WF_CURRENT_VERSION))
 WF_TARBALL = wildfly-$(WF_VERSION).tar.gz
 WF_TARBALL_ORIG = $(subst -,_,$(subst tar.gz,orig.tar.gz,$(WF_TARBALL)))
 WF_DIRECTORY = wildfly-$(WF_VERSION)
-WF_DOWNLOAD_URL = http://download.jboss.org/wildfly/$(WF_VERSION)/$(WF_TARBALL)
+WF_DOWNLOAD_URL = https://github.com/wildfly/wildfly/releases/download/$(WF_VERSION)/$(WF_TARBALL)
 WF_DISTRIBUTION := $(or $(distribution),$(WF_DISTRIBUTION),$(shell lsb_release -sc))
 GPG_KEY := $(or $(gpg),$(GPG_KEY))
 PPA_VERSION := $(or $(ppa_version),$(PPA_VERSION),$(shell cat PPA_VERSION))
