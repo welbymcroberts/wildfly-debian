@@ -51,14 +51,11 @@ unpack: $(WF_TARBALL) clean
 copy: unpack
 	cp -R debian $(WF_DIRECTORY)/
 
-$(WF_DIRECTORY)/debian/wildfly.init: copy
-	find $(WF_DIRECTORY) -name wildfly-init-debian.sh -exec cp {} $(WF_DIRECTORY)/debian/wildfly.init \;
-
 conffiles: copy
 	cd $(WF_DIRECTORY) && find domain/ standalone/ -type f -exec echo "/opt/wildfly/{}" \; > debian/wildfly.conffiles
 	cd $(WF_DIRECTORY) && find bin/ \( -name '*.conf' -o -name '*.properties' \) -exec echo "/opt/wildfly/{}" \; >> debian/wildfly.conffiles
 
-prepare: $(WF_DIRECTORY)/debian/wildfly.init conffiles PPA_VERSION
+prepare: $(WF_DIRECTORY)/debian/wildfly.service conffiles PPA_VERSION
 	cd $(WF_DIRECTORY) && \
 	dch --create --distribution=$(WF_DISTRIBUTION) --package=wildfly \
 	    --newversion=$(WF_VERSION)-1~$(WF_DISTRIBUTION)ppa$(PPA_VERSION) \

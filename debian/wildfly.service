@@ -1,0 +1,39 @@
+[Unit]
+Description=The WildFly Application Server
+After=syslog.target network.target
+Before=httpd.service
+
+[Service]
+# Assume standalone for default
+Environment=WILDFLY_MODE=standalone
+
+# Assume no config or bind config
+Environment=WILDFLY_CONFIG=
+Environment=WILDFLY_BIND=
+
+# Load in defaults file if exists
+EnvironmentFile=-/etc/default/wildfly
+
+# Load in /etc/wildfly/ config file if exists
+EnvironmentFile=-/etc/wildfly/wildfly.conf
+
+# Start wildfly in the background
+Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
+
+# Drop privileges to
+User=wildfly
+Group=wildfly
+
+LimitNOFILE=102642
+PIDFile=/var/run/wildfly/wildfly.pid
+
+ExecStart=/usr/bin/bash /opt/wildfly/bin/${WILDFLY_MODE}.sh $WILDFLY_CONFIG $WILDFLY_BIND
+ExecStop=/usr/bin/bash /opt/wildfly/bin/jboss-cli.sh --connect command=:shutdown
+
+StandardOutput=journal
+
+# Timeouts
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target
